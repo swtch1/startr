@@ -1,0 +1,16 @@
+farm_id_or_name: rundeck-sandbox
+farm_roles:
+  mariadb-galera-cluster:
+    - running_count: 3  # farm_role_maximum
+    - block_until_running_count: 2
+  mariadb-load-balancer: ~
+  rundeck-load-balancer: ~
+  rundeck:
+    - running_count: 3
+    - depends:
+      - rundeck-load-balancer
+      - mariadb-galera-cluster
+      - mariadb-load-balancer
+  roleC:
+    - depends: roleB
+  jenkins: ~

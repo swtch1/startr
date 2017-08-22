@@ -1,0 +1,7 @@
+application:
+  dry_run_sleep_timer_seconds: 0.5
+system:
+  path_to_config_files: ~/.startr/
+launch_definition:
+  farm_role_running_count: 1
+  farm_role_block_until_running_count: 1
