@@ -1,7 +1,7 @@
 from requests.exceptions import HTTPError
 import os
 
-from startr.scalr import api
+from startr.scalr.api import Api
 from startr.logger import log
 
 __purpose__ = 'Provide validation functions in a centralized location.'
@@ -55,8 +55,8 @@ class ValidateStartDefinition:
         self.dependencies_from_start_definition = dependencies_from_start_definition
         self.running_counts_from_start_definition = running_counts_from_start_definition
 
-        self.verified_farm_roles = api.get_farm_roles(environment_id=self.environment_id_from_start_definition,
-                                                      farm_id=self.farm_id_from_start_definition)
+        self.scalr_api = Api(environment_id=self.environment_id_from_start_definition)
+        self.verified_farm_roles = self.scalr_api.get_farm_roles(farm_id=self.farm_id_from_start_definition)
 
     def validate_definition(self):
         self._validate_farm_id()
@@ -69,8 +69,7 @@ class ValidateStartDefinition:
         Verify that the environment ID is valid.
         """
         try:
-            api.get_farm_details(environment_id=self.environment_id_from_start_definition,
-                                 farm_id=self.farm_id_from_start_definition)
+            self.scalr_api.get_farm_details(farm_id=self.farm_id_from_start_definition)
         except HTTPError:
             log.critical('start definition validation failed: invalid environment id')
 
@@ -79,8 +78,7 @@ class ValidateStartDefinition:
         Verify that the farm ID is valid.
         """
         try:
-            api.get_farm_details(environment_id=self.environment_id_from_start_definition,
-                                 farm_id=self.farm_id_from_start_definition)
+            self.scalr_api.get_farm_details(farm_id=self.farm_id_from_start_definition)
         except HTTPError:  # FIXME
             log.critical('start definition validation failed: invalid farm id')
             exit(1)

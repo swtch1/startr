@@ -3,7 +3,7 @@ import argparse
 
 import yaml
 
-from startr.scalr import api
+from startr.scalr.api import Api
 from startr.validator import ValidateArgs, ValidateStartDefinition
 from startr.start_definition import StartDefinitionHandler
 
@@ -50,7 +50,12 @@ def main():
                                                        running_counts_from_start_definition=sdh.get_running_counts())
         definition_validator.validate_definition()
 
-
+    # from pprint import pprint
+    # # pprint(api.get_farm_role_details('269', api.get_farm_role_id_by_name(269,
+    # #                                                                      api.get_farm_id_by_name(269, 'rundeck-sandbox'),
+    # #                                                                      'base-role')))
+    #
+    # pprint(api.get_farm_role_max_instances(269, api.get_farm_role_id_by_name(269, farm_id=api.get_farm_id_by_name(269, 'rundeck-sandbox'), farm_role_name='base-role')))
 
 
 if __name__ == '__main__':

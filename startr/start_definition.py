@@ -1,4 +1,4 @@
-from startr.scalr import api
+from startr.scalr.api import Api
 
 __purpose__ = 'Operations related to parsing the start definition file.'
 
@@ -22,8 +22,8 @@ class StartDefinitionHandler:
         try:
             return int(self.start_definition['farm_id_or_name'])
         except ValueError:
-            return api.get_farm_id_by_name(environment_id=self.get_environment_id(),
-                                           farm_name=self.start_definition['farm_id_or_name'])
+            api = Api(environment_id=self.get_environment_id())
+            return api.get_farm_id_by_name(farm_name=self.start_definition['farm_id_or_name'])
 
     def get_farm_roles(self):
         """
