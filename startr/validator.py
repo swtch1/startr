@@ -43,16 +43,20 @@ class ValidateArgs:
 
 
 class ValidateStartDefinition:
-    def __init__(self, farm_id_from_start_definition,
+    def __init__(self,
+                 environment_id_from_start_definition,
+                 farm_id_from_start_definition,
                  farm_roles_from_start_definition,
                  dependencies_from_start_definition,
                  running_counts_from_start_definition):
+        self.environment_id_from_start_definition = environment_id_from_start_definition
         self.farm_id_from_start_definition = farm_id_from_start_definition
         self.farm_roles_from_start_definition = farm_roles_from_start_definition
         self.dependencies_from_start_definition = dependencies_from_start_definition
         self.running_counts_from_start_definition = running_counts_from_start_definition
 
-        self.verified_farm_roles = api.get_farm_roles(farm_id=self.farm_id_from_start_definition)
+        self.verified_farm_roles = api.get_farm_roles(environment_id=self.environment_id_from_start_definition,
+                                                      farm_id=self.farm_id_from_start_definition)
 
     def validate_definition(self):
         self._validate_farm_id()
@@ -60,12 +64,23 @@ class ValidateStartDefinition:
         self._validate_dependency_roles()
         self._validate_running_counts()
 
+    def _validate_environment_id(self):
+        """
+        Verify that the environment ID is valid.
+        """
+        try:
+            api.get_farm_details(environment_id=self.environment_id_from_start_definition,
+                                 farm_id=self.farm_id_from_start_definition)
+        except HTTPError:
+            log.critical('start definition validation failed: invalid environment id')
+
     def _validate_farm_id(self):
         """
         Verify that the farm ID is valid.
         """
         try:
-            api.get_farm_details(farm_id=self.farm_id_from_start_definition)
+            api.get_farm_details(environment_id=self.environment_id_from_start_definition,
+                                 farm_id=self.farm_id_from_start_definition)
         except HTTPError:  # FIXME
             log.critical('start definition validation failed: invalid farm id')
             exit(1)

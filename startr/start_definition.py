@@ -7,6 +7,13 @@ class StartDefinitionHandler:
     def __init__(self, start_definition):
         self.start_definition = start_definition
 
+    def get_environment_id(self):
+        """
+        Get the ID of the environment in the start definition.
+        :return: environment ID
+        """
+        return int(self.start_definition['environment_id'])
+
     def get_farm_id(self):
         """
         Get the ID of the farm defined in the start definition.
@@ -15,7 +22,8 @@ class StartDefinitionHandler:
         try:
             return int(self.start_definition['farm_id_or_name'])
         except ValueError:
-            return api.get_farm_id_by_name(self.start_definition['farm_id_or_name'])
+            return api.get_farm_id_by_name(environment_id=self.get_environment_id(),
+                                           farm_name=self.start_definition['farm_id_or_name'])
 
     def get_farm_roles(self):
         """

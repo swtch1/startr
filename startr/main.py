@@ -43,7 +43,8 @@ def main():
             sdh = StartDefinitionHandler(start_definition=yaml.load(f))
 
     if not args.dry_run:
-        definition_validator = ValidateStartDefinition(farm_id_from_start_definition=sdh.get_farm_id(),
+        definition_validator = ValidateStartDefinition(environment_id_from_start_definition=sdh.get_environment_id(),
+                                                       farm_id_from_start_definition=sdh.get_farm_id(),
                                                        farm_roles_from_start_definition=sdh.get_farm_roles(),
                                                        dependencies_from_start_definition=sdh.get_dependencies(),
                                                        running_counts_from_start_definition=sdh.get_running_counts())
