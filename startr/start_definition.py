@@ -1,9 +1,9 @@
 from startr.scalr import api
 
-__purpose__ = 'Operations related to parsing the launch definition file.'
+__purpose__ = 'Operations related to parsing the start definition file.'
 
 
-class LaunchDefinitionHandler:
+class StartDefinitionHandler:
     def __init__(self, start_definition):
         self.start_definition = start_definition
 
@@ -18,8 +18,8 @@ class LaunchDefinitionHandler:
 
     def get_dependencies(self):
         """
-        Get all of the dependencies in a launch definition.
-        :param start_definition: full launch definition from file
+        Get all of the dependencies in a start definition.
+        :param start_definition: full start definition from file
         :return: dependencies list
         """
         dependencies = []

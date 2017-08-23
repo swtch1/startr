@@ -42,7 +42,7 @@ class ValidateArgs:
         return seconds
 
 
-class ValidateLaunchDefinition:
+class ValidateStartDefinition:
     def __init__(self, farm_id, farm_roles, dependencies):
         self.farm_id = farm_id
         self.farm_roles = farm_roles

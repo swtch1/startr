@@ -4,8 +4,8 @@ import argparse
 import yaml
 
 from startr.scalr import api
-from startr.validator import ValidateArgs, ValidateLaunchDefinition
-from startr.start_definition import LaunchDefinitionHandler
+from startr.validator import ValidateArgs, ValidateStartDefinition
+from startr.start_definition import StartDefinitionHandler
 
 __purpose__ = 'Application entry point.'
 
@@ -35,20 +35,22 @@ parser.add_argument('--dry-run',
 
 
 def main():
+    if args.start_definition_file:
+        with open(os.path.abspath(args.start_definition_file), 'r') as f:
+            sdh = StartDefinitionHandler(start_definition=yaml.load(f))
+    else:
+        with open(os.path.join(os.path.expanduser('~'), '.startr', 'start_definition.yml'), 'r') as f:
+            sdh = StartDefinitionHandler(start_definition=yaml.load(f))
+
     if not args.dry_run:
-        definition_validator = ValidateLaunchDefinition(farm_id=ldh.get_farm_id(),
-                                                        farm_roles=ldh.get_farm_roles(),
-                                                        dependencies=ldh.get_dependencies())
+        definition_validator = ValidateStartDefinition(farm_id=sdh.get_farm_id(),
+                                                       farm_roles=sdh.get_farm_roles(),
+                                                       dependencies=sdh.get_dependencies())
         definition_validator.validate_definition()
+
+
 
 
 if __name__ == '__main__':
     args = parser.parse_args()
-    if args.start_definition_file:
-        with open(os.path.abspath(args.start_definition_file), 'r') as f:
-            ldh = LaunchDefinitionHandler(start_definition=yaml.load(f))
-    else:
-        with open(os.path.join(os.path.expanduser('~'), '.startr', 'start_definition.yml'), 'r') as f:
-            ldh = LaunchDefinitionHandler(start_definition=yaml.load(f))
-
     main()
