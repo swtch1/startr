@@ -13,3 +13,5 @@ Scalr configuration details are managed through the following environment variab
 
 ## Start Definition
 The start definition is a configuration file used to specify ...  
+
+# TODO: talk about role_maximum as special variable.
