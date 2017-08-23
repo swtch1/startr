@@ -27,6 +27,11 @@ def get_farm_id_by_name(farm_name):
         return None
 
 
+def get_farm_details(farm_id):
+    return client.get('/api/v1beta0/user/{envId}/farms/{farmId}/'.format(envId=SCALR_ENV_ID,
+                                                                         farmId=farm_id))
+
+
 def get_farm_servers(farm_id):
     return client.get('/api/v1beta0/user/{envId}/farms/{farmId}/servers/'.format(envId=SCALR_ENV_ID,
                                                                                  farmId=farm_id))
@@ -49,6 +54,7 @@ def get_all_server_count_by_role(farm_role_id):
                                                                                               farmRoleId=farm_role_id)))
     # TODO: handle errors
 
+
 def get_running_server_count_by_role(farm_role_id):
     servers = client.get('/api/v1beta0/user/{envId}/farm-roles/{farmRoleId}/servers/'.format(envId=SCALR_ENV_ID,
                                                                                              farmRoleId=farm_role_id))
@@ -64,21 +70,3 @@ def launch_server(farm_role_id):
     # TODO: ensure launch was successful
     # TODO: Return the id of the server so we can verify it's up.
     # TODO: Test that launching will automatically increase min/max server counts.
-
-
-
-# print get_farm_id_by_name('rundeck-sandbox')
-# farms =  client.get('/api/v1beta0/user/{envId}/farms/'.format(envId=SCALR_ENV_ID))
-# id = get_farm_role_id_by_name(farm_id, 'base-role')
-id = get_farm_role_id_by_name(6000, 'base-role')
-launch_server(id)
-print get_all_server_count_by_role(id)
-print get_running_server_count_by_role(id)
-
-# pprint(client.get('/api/v1beta0/user/269/farm-roles/376c2e5f-2fde-4fb0-bab1-11d0e9f59676/servers/'))
-# pprint(get_farm_servers(6000)[0])
-# client.get('/api/v1beta0/user/{envId}/servers/{serverId}/'.format(envId=SCALR_ENV_ID,
-#                                                                   serverId=''))
-
-print('done')
-

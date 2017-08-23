@@ -1,24 +1,28 @@
+from requests.exceptions import HTTPError
 import os
+
+from startr.scalr import api
+from startr.logger import log
 
 __purpose__ = 'Provide validation functions in a centralized location.'
 
 
 class ValidateArgs:
     @staticmethod
-    def launch_definition_file(launch_definition_file_string):
+    def start_definition_file(start_definition_file_string):
         """
-        Verify that the launch_definition_file_string is of the correct type and exists on the filesystem.
-        :param launch_definition_file_string: path to config file
-        :return: launch_definition_file_string
+        Verify that the start_definition_file_string is of the correct type and exists on the filesystem.
+        :param start_definition_file_string: path to config file
+        :return: start_definition_file_string
         """
-        if not isinstance(launch_definition_file_string, str):
+        if not isinstance(start_definition_file_string, str):
             print('Invalid input for config file: argument must be a string')
             exit(1)
-        abs_file_path = os.path.abspath(launch_definition_file_string)
+        abs_file_path = os.path.abspath(start_definition_file_string)
         if not os.path.isfile(abs_file_path):
             print('Invalid input for config file: could not find a file at {}'.format(abs_file_path))
             exit(1)
-        return launch_definition_file_string
+        return start_definition_file_string
 
     @staticmethod
     def block_time_seconds(seconds):
@@ -54,7 +58,12 @@ class ValidateLaunchDefinition:
         Verify that the farm ID is valid.
         :param farm_id: farm ID of the farm to verify.
         """
-        pass
+        try:
+            api.get_farm_details(self.farm_id)
+        except HTTPError:  # FIXME
+            log.critical('invalid farm id: quitting')
+            exit(1)
+
 
     def _validate_farm_roles(self):
         """

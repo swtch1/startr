@@ -92,7 +92,7 @@ ENV/
 .idea
 
 # Config
-launch_definition.yml
+start_definition.yml
 
 # Temporary auth file
 auth.conf

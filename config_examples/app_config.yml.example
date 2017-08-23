@@ -1,0 +1,7 @@
+## Define the application logging level
+#log_level: debug
+log_level: info
+#log_level: warning
+#log_level: error
+#log_level: critical
+
