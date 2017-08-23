@@ -11,3 +11,5 @@ Scalr configuration details are managed through the following environment variab
 * SCALR_URL: URL of the Scalr instance to query.  For the GE Digital implementation this is [https://scalr.corporate.ge.com](https://scalr.corporate.ge.com).
 * SCALR_ENV_ID: ID of the Scalr environment to manage. This can be found in the Scalr interface by hovering over the environment (sometimes refered to as VPC) dropdown in the top right corner without clicking it.  Alternatively if this application is running on a Scalr managed server the environment variable is likely already set. 
 
+## Start Definition
+The start definition is a configuration file used to specify ...  

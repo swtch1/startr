@@ -18,6 +18,11 @@ client = ScalrApiClient(api_url=SCALR_URL, key_id=SCALR_API_KEY, key_secret=SCAL
 
 
 def get_farm_id_by_name(farm_name):
+    """
+    Get the ID of a farm from the farm name.
+    :param farm_name: name of farm to query
+    :return: farm ID
+    """
     farms = client.get('/api/v1beta0/user/{envId}/farms/'.format(envId=SCALR_ENV_ID))
     # TODO: handle errors
     try:
@@ -28,20 +33,45 @@ def get_farm_id_by_name(farm_name):
 
 
 def get_farm_details(farm_id):
+    """
+    Return general details on a farm.
+    :param farm_id: ID of the farm to query
+    :return: farm details JSON
+    """
     return client.get('/api/v1beta0/user/{envId}/farms/{farmId}/'.format(envId=SCALR_ENV_ID,
                                                                          farmId=farm_id))
 
 
 def get_farm_servers(farm_id):
+    """
+    Get all servers in a farm.
+    :param farm_id: ID of the farm to query
+    :return: farm servers list
+    """
     return client.get('/api/v1beta0/user/{envId}/farms/{farmId}/servers/'.format(envId=SCALR_ENV_ID,
                                                                                  farmId=farm_id))
-    # TODO: Handle errors
+
+
+def get_farm_roles(farm_id):
+    """
+    Return list of farm roles in a farm.
+    :param farm_id: id of the farm to query
+    :return: list of farm roles
+    """
+    roles_object = client.get('/api/v1beta0/user/{envId}/farms/{farmId}/farm-roles/'.format(envId=SCALR_ENV_ID,
+                                                                                            farmId=farm_id))
+    return [farm_role['alias'] for farm_role in roles_object]
 
 
 def get_farm_role_id_by_name(farm_id, farm_role_name):
+    """
+    Get a farm role ID from the farm role name
+    :param farm_id: ID of the farm the farm role belongs to
+    :param farm_role_name: name of farm role to query
+    :return: farm role ID
+    """
     farm_roles = client.get('/api/v1beta0/user/{envId}/farms/{farmId}/farm-roles/'.format(envId=SCALR_ENV_ID,
                                                                                           farmId=farm_id))
-    # TODO: handle errors
     try:
         matching_role = filter(lambda x: x['alias'] == farm_role_name, farm_roles)[0]
         return matching_role['id']
@@ -50,19 +80,32 @@ def get_farm_role_id_by_name(farm_id, farm_role_name):
 
 
 def get_all_server_count_by_role(farm_role_id):
+    """
+    Get a count of all servers in a farm role, regardless of status.
+    :param farm_role_id: ID of farm role to query
+    :return: server count
+    """
     return len(client.get('/api/v1beta0/user/{envId}/farm-roles/{farmRoleId}/servers/'.format(envId=SCALR_ENV_ID,
                                                                                               farmRoleId=farm_role_id)))
-    # TODO: handle errors
 
 
 def get_running_server_count_by_role(farm_role_id):
+    """
+    Get a count of all servers in a farm role with a status of 'running'
+    :param farm_role_id: ID of farm role to query
+    :return: running server count
+    """
     servers = client.get('/api/v1beta0/user/{envId}/farm-roles/{farmRoleId}/servers/'.format(envId=SCALR_ENV_ID,
                                                                                              farmRoleId=farm_role_id))
     return len(filter(lambda x: x['status'] == 'running', servers))
-    # TODO: handle errors
 
 
 def launch_server(farm_role_id):
+    """
+    Launch a server of a particular farm role type.
+    :param farm_role_id: ID of farm role to launch server in
+    :return: None
+    """
     ret = client.post('/api/v1beta0/user/{envId}/farm-roles/{farmRoleId}/servers/'.format(envId=SCALR_ENV_ID,
                                                                                         farmRoleId=farm_role_id))
     # TODO: handle errors

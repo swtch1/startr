@@ -43,38 +43,61 @@ class ValidateArgs:
 
 
 class ValidateStartDefinition:
-    def __init__(self, farm_id, farm_roles, dependencies):
-        self.farm_id = farm_id
-        self.farm_roles = farm_roles
-        self.dependencies = dependencies
+    def __init__(self, farm_id_from_start_definition,
+                 farm_roles_from_start_definition,
+                 dependencies_from_start_definition,
+                 running_counts_from_start_definition):
+        self.farm_id_from_start_definition = farm_id_from_start_definition
+        self.farm_roles_from_start_definition = farm_roles_from_start_definition
+        self.dependencies_from_start_definition = dependencies_from_start_definition
+        self.running_counts_from_start_definition = running_counts_from_start_definition
+
+        self.verified_farm_roles = api.get_farm_roles(farm_id=self.farm_id_from_start_definition)
 
     def validate_definition(self):
         self._validate_farm_id()
         self._validate_farm_roles()
         self._validate_dependency_roles()
+        self._validate_running_counts()
 
     def _validate_farm_id(self):
         """
         Verify that the farm ID is valid.
-        :param farm_id: farm ID of the farm to verify.
         """
         try:
-            api.get_farm_details(self.farm_id)
+            api.get_farm_details(farm_id=self.farm_id_from_start_definition)
         except HTTPError:  # FIXME
-            log.critical('invalid farm id: quitting')
+            log.critical('start definition validation failed: invalid farm id')
             exit(1)
-
 
     def _validate_farm_roles(self):
         """
         Verify that all of the farm roles are valid.
-        :param farm_roles: list of farm roles to validate.
         """
-        pass
+        if not all(map(lambda role: role in self.verified_farm_roles, self.farm_roles_from_start_definition)):
+            invalid_farm_roles = filter(lambda role: role not in self.verified_farm_roles, self.farm_roles_from_start_definition)
+            log.critical('start definition validation failed: invalid farm roles: {}'.format(invalid_farm_roles))
+            exit(1)
 
     def _validate_dependency_roles(self):
         """
         Verify that all of the dependencies listed are valid.
-        :param depends: list of dependencies to validate.
         """
-        pass
+        if not all(map(lambda role: role in self.verified_farm_roles, self.dependencies_from_start_definition)):
+            invalid_dependencies = filter(lambda dependency: dependency not in self.verified_farm_roles, self.dependencies_from_start_definition)
+            log.critical('start definition validation failed: invalid dependencies: {}'.format(invalid_dependencies))
+            exit(1)
+
+    def _validate_running_counts(self):
+        """
+        Verift that the farm role running counts are all numbers.
+        """
+        running_counts = filter(lambda x: x != 'role_maximum', self.running_counts_from_start_definition)
+        try:
+            [int(count) for count in running_counts]
+        except ValueError:
+           log.critical('start definition validation failed: running count must be an integer')
+           exit(1)
+        if not all(map(lambda x: x > 0, running_counts)):
+            log.critical('start definition validation failed: running count must be greater than 0')
+            exit(1)
