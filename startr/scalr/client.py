@@ -11,7 +11,7 @@ class ScalrApiClient(object):
         self.api_url = api_url
         self.key_id = key_id
         self.key_secret = key_secret
-        self.logger = logging.getLogger('api[{0}]'.format(self.api_url))
+        self.logger = logging.getLogger('api[{0}]'.format(self.api_url))  # TODO: Deal with this logging, I don't really want it here.  Or at least use mine.
         self.logger.addHandler(logging.StreamHandler())
         self.session = ScalrApiSession(self)
 

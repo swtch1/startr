@@ -63,6 +63,7 @@ class ValidateStartDefinition:
         self._validate_farm_roles()
         self._validate_dependency_roles()
         self._validate_running_counts()
+        self._validate_block_not_greater_than_running_count()
 
     def _validate_environment_id(self):
         """
@@ -114,3 +115,10 @@ class ValidateStartDefinition:
         if not all(map(lambda x: x > 0, running_counts)):
             log.critical('start definition validation failed: running count must be greater than 0')
             exit(1)
+
+    def _validate_block_not_greater_than_running_count(self):
+        """
+        Verift that the block until running count is not greater than the running count for any role.
+        :return:
+        """
+        pass  # FIXME

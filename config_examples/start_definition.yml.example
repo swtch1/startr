@@ -4,6 +4,7 @@ farm_roles:
   mariadb-galera-cluster:
     running_count: 3  # farm_role_maximum
     block_until_running_count: 2
+    delay_between_start_seconds: 2
   mariadb-load-balancer: ~
   rundeck-load-balancer: ~
   rundeck:

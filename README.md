@@ -14,4 +14,4 @@ Scalr configuration details are managed through the following environment variab
 ## Start Definition
 The start definition is a configuration file used to specify ...  
 
-# TODO: talk about role_maximum as special variable.
+# TODO: talk about role_maximum as special variable. Also, warn that if using the farm role maximum you had better know that it's higher than your block_until_running_count.

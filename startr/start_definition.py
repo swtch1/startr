@@ -32,7 +32,7 @@ class StartDefinitionHandler:
         """
         return [farm_role for farm_role in self.start_definition['farm_roles']]
 
-    def get_dependencies(self):
+    def get_all_dependencies(self):
         """
         Get all of the dependencies in a start definition.
         :return: dependencies list
@@ -62,3 +62,47 @@ class StartDefinitionHandler:
             except AttributeError:
                 pass
         return running_counts
+
+    def get_dependencies_by_farm_role(self, farm_role):
+        """
+        Get all of the dependencies for a farm role.
+        :param farm_role: name of farm role to queery
+        :return: farm role dependencies list
+        """
+        try:
+            return self.start_definition['farm_roles'][farm_role]['depends']
+        except KeyError:
+            return None
+
+    def get_delay_between_start_seconds_by_farm_role(self, farm_role):
+        """
+        Get the delay between start seconds for a farm role.
+        :param farm_role: name of farm role to query
+        :return: farm role delay between start seconds
+        """
+        try:
+            return self.start_definition['farm_roles'][farm_role]['delay_between_start_seconds']
+        except KeyError:
+            return None
+
+    def get_block_until_running_count_by_farm_role(self, farm_role):
+        """
+        Get the block until running count for a farm role.
+        :param farm_role: name of the farm role to query
+        :return: farm role block until running count
+        """
+        try:
+            return self.start_definition['farm_roles'][farm_role]['block_until_running_count']
+        except KeyError:
+            return None
+
+    def get_running_count_by_farm_role(self, farm_role):
+        """
+        Get the running count for a farm role.
+        :param farm_role: name of the farm role to query
+        :return: farm role running count
+        """
+        try:
+            return self.start_definition['farm_roles'][farm_role]['running_count']
+        except KeyError:
+            return None

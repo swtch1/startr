@@ -2,5 +2,7 @@
 application:
   dry_run_sleep_timer_seconds: 0.5
 start_definition:
-  farm_role_running_count: 1
-  farm_role_block_until_running_count: 1
+  farm_role:
+    running_count: 1
+    block_until_running_count: 1
+    delay_between_start_seconds: 0
