@@ -67,7 +67,6 @@ class ScalrApiSession(requests.Session):
 
     def request(self, *args, **kwargs):
         res = super(ScalrApiSession, self).request(*args, **kwargs)
-        self.client.logger.info('%s - %s', ' '.join(args), res.status_code)
         try:
             errors = res.json().get('errors', None)
             if errors is not None:

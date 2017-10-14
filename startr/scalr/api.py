@@ -124,8 +124,8 @@ class Api:
         :param farm_role_id: ID of farm role to launch server in
         :return: None
         """
-        ret = client.post('/api/v1beta0/user/{envId}/farm-roles/{farmRoleId}/servers/'.format(envId=self.environment_id,
-                                                                                              farmRoleId=farm_role_id))
+        return client.post('/api/v1beta0/user/{envId}/farm-roles/{farmRoleId}/servers/'.format(envId=self.environment_id,
+                                                                                               farmRoleId=farm_role_id))
         # TODO: handle errors
         # Successful response, Status 201
         # TODO: ensure launch was successful
