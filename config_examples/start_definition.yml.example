@@ -2,14 +2,14 @@ environment_id: 269
 farm_id_or_name: rundeck-sandboxs
 farm_roles:
   mariadb-galera-cluster:
-    running_count: 3  # farm_role_maximum
-    block_until_running_count: 2
-    delay_between_start_seconds: 2
-  mariadb-load-balancer: ~
+    running_count: 3  # start this many servers
+    block_until_running_count: 2  # meet dependency after this many servers running
+    delay_between_start_seconds: 2  # wait this long to start the next server of this farm role
+  mariadb-load-balancer: ~  # use tilde to just launch with no options
   rundeck-load-balancer: ~
   rundeck:
     running_count: 3
-    depends:
+    depends:  # this farm role will launch when all dependencies are have a running count of block_until_running_count
       - rundeck-load-balancer
       - mariadb-galera-cluster
       - mariadb-load-balancer

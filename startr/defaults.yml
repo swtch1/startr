@@ -1,6 +1,7 @@
 # Internal implementation details that the user need not be concerned with.
 application:
   dry_run_sleep_timer_seconds: 0.5
+  dep_not_satisfied_sleep_timer_seconds: 5
 start_definition:
   farm_role:
     running_count: 1
