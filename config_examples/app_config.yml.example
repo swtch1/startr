@@ -1,3 +1,6 @@
+## Scalr target url
+scalr_url: https://scalr.corporate.ge.com
+
 ## Define the application logging level
 #log_level: debug
 log_level: info

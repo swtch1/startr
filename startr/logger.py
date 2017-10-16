@@ -3,6 +3,8 @@ import sys
 
 from startr.config import config
 
+__purpose__ = 'Define logging details.'
+
 
 def build_logger(log_level, log_file_location=None):
     log_format = '[%(asctime)s] [%(levelname)s] (%(process)d) %(module)s: %(message)s'

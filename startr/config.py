@@ -9,4 +9,5 @@ with open(os.path.join(os.path.expanduser('~'), '.startr', 'app_config.yml'), 'r
     config = yaml.load(f)
 with open(os.path.join(CUR_DIR, 'defaults.yml')) as f:  # FIXME: establish a path to the defaults file.
     defaults = yaml.load(f)  # TODO: Establish this as an enum.
-# TODO: we still need to bring in the actual auth file if not from env vars
+with open(os.path.join(CUR_DIR, 'auth.yml')) as f:  # FIXME: establish a path to the auth file.
+    auth = yaml.load(f)  # TODO: Establish this as an enum.

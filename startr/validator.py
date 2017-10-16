@@ -54,7 +54,7 @@ class ValidateStartDefinition:
         self.depends = depends
         self.running_counts = running_counts
 
-        self.scalr_api = Api(environment_id=self.env_id,
+        self.scalr_api = Api(env_id=self.env_id,
                              farm_id_or_name=self.farm_id_or_name)
         self.verified_farm_roles = self.scalr_api.farm_roles()
 

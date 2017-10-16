@@ -4,11 +4,12 @@ import os
 import argparse
 
 import yaml
-
-from startr.scalr.api import Api
+# TODO: Test that launching will automatically increase min/max server counts.
+from scalrapi import Api
+# from startr.scalr.api import Api
 from startr.validator import ValidateArgs, ValidateStartDefinition
 from startr.start_definition import StartDefHandler
-from startr.config import defaults
+from startr.config import config, defaults, auth
 
 __purpose__ = 'Application entry point.'
 
@@ -32,6 +33,10 @@ parser.add_argument('--dry-run',
                     action='store_true',
                     help='Perform a dry run.  Display what would happen without actually making any changes.')
 
+# TODO: Do something with this
+# client = ScalrApiClient((os.getenv('SCALR_URL') or config['scalr_url']).rstrip('/'),
+#                         os.getenv('SCALR_API_KEY') or auth['scalr_api_key'],
+#                         os.getenv('SCALR_SECRET_KEY') or auth['scalr_secret_key'])
 
 def main():
     if args.dry_run:
@@ -44,9 +49,7 @@ def main():
         with open(os.path.join(os.path.expanduser('~'), '.startr', 'start_definition.yml'), 'r') as f:
             start_def = StartDefHandler(start_def=yaml.load(f))
 
-    if args.dry_run:
-        print('validating start definition')
-        sleep(defaults['application']['dry_run_sleep_timer_seconds'])
+    print('validating start definition')
     definition_validator = ValidateStartDefinition(start_def.env_id(),
                                                    start_def.farm_id_or_name(),
                                                    start_def.farm_roles(),
@@ -54,7 +57,11 @@ def main():
                                                    start_def.running_counts())  # TODO: refactor to just take start definition.
     definition_validator.validate_definition()
 
-    scalr = Api(start_def.env_id(), start_def.farm_id_or_name())
+    scalr = Api(start_def.env_id(),
+                start_def.farm_id_or_name(),
+                config['scalr_url'],
+                auth['scalr_key_id'],
+                auth['scalr_secret_key'])
 
     def dependency_satisfied(farm_role, dry_run):  # TODO: move somwehere else.
         """

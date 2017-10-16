@@ -1,5 +1,3 @@
-from startr.scalr.api import Api
-
 __purpose__ = 'Operations related to parsing the start definition file.'
 
 

@@ -1,0 +1,4 @@
+## Keep the creds separate from config so that it can easily be added to .gitignore.
+## Scalr keys can be obtained from https://[scalr_url]/#/core/api2
+scalr_key_id: APIKRCV51000000AAAAA
+scalr_secret_key: ABCDEFGabcdefg0123456789
